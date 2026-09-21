@@ -13,13 +13,13 @@ Colombia**, con datos anuales entre 2015 y 2025.
 ├── resultado_completo.xlsx                       # salida paso 1: ratios por empresa-año
 ├── scorecard_riesgo.xlsx                         # salida paso 2: scorecard final
 ├── Analisis_Riesgo_Sector_Electrico_Bancolombia_Andres_Pertuz.pbix   # tablero Power BI
-├── EPM_BD/                                       # estados financieros XBRL de EPM
-├── ISA_BD/                                       # estados financieros XBRL de ISA
-├── ISAGEN_BD/                                    # estados financieros XBRL de ISAGEN
-├── ENEL/                                         # estados financieros XBRL de EMGESA/Enel
-├── CELSIA/                                       # estados financieros XBRL de CELSIA
+├── *.xbrl                                        # estados financieros de entrada (55 archivos, las 5 empresas)
 └── video/                                        # video de presentación de resultados
 ```
+
+Los `.xbrl` están todos en la raíz del repositorio. No hace falta separarlos por
+empresa: el notebook identifica a qué empresa pertenece cada archivo leyendo
+su contenido (función `empresa_canonica`), no por el nombre de la carpeta.
 
 ## Qué hace el análisis
 
@@ -67,16 +67,13 @@ Fitch, BRC o prensa).
 
 4. **Antes de correr la celda 2**, genera `resultado_completo.xlsx`
    ejecutando esto en una celda nueva justo después de la celda 1 (que ya
-   define las funciones de extracción), apuntando a las carpetas de datos:
+   define las funciones de extracción), apuntando a la carpeta del
+   repositorio (todos los `.xbrl` están en la raíz):
 
    ```python
    from pathlib import Path
 
-   carpetas = ["EPM_BD", "ISA_BD", "ISAGEN_BD", "ENEL", "CELSIA"]
-   archivos = []
-   for carpeta in carpetas:
-       archivos += encontrar_archivos_xbrl(Path(carpeta))
-
+   archivos = encontrar_archivos_xbrl(Path("."))
    resultados = procesar_todos(archivos)
    guardar_excel(resultados, Path("resultado_completo.xlsx"))
    ```
@@ -101,4 +98,5 @@ Fitch, BRC o prensa).
   el repositorio con el resultado ya generado, por si solo quieres
   revisarlos sin correr nada.
 
-## Video: https://youtu.be/rzVS0dNzdEE
+## Video de resultados
+https://youtu.be/rzVS0dNzdEE
